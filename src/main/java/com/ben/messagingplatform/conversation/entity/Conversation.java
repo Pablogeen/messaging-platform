@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "conversations")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Conversation {
 
@@ -45,4 +47,10 @@ public class Conversation {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+
+    public long incrementLastSequence() {
+        return ++lastSequence;
+    }
+
 }
