@@ -51,6 +51,9 @@ public class OutboxEvent {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "processing_at")
+    private LocalDateTime processingAt;
+
     @Column(name = "published_at")
     private LocalDateTime publishedAt;
 
@@ -67,16 +70,30 @@ public class OutboxEvent {
         this.createdAt = LocalDateTime.now();
     }
 
+    public void markPending() {
+        this.status = OutboxEventStatus.PENDING;
+        this.processingAt = null;
+    }
+
+    public void markProcessing() {
+        this.status = OutboxEventStatus.PROCESSING;
+        this.processingAt = LocalDateTime.now();
+    }
+
     public void markPublished() {
         this.status = OutboxEventStatus.PUBLISHED;
         this.publishedAt = LocalDateTime.now();
+        this.processingAt = null;
+    }
+
+    public void markFailed() {
+        this.status = OutboxEventStatus.FAILED;
+        this.processingAt = null;
     }
 
     public void incrementRetryCount() {
         this.retryCount++;
     }
 
-    public void markFailed() {
-        this.status = OutboxEventStatus.FAILED;
-    }
+
 }
