@@ -2,9 +2,7 @@ package com.ben.messagingplatform.outbox.repository;
 
 import com.ben.messagingplatform.outbox.entity.OutboxEvent;
 import com.ben.messagingplatform.outbox.entity.OutboxEventStatus;
-import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,15 +18,13 @@ public interface OutboxEventRepository
 
     List<OutboxEvent> findByStatusOrderByCreatedAtAsc(OutboxEventStatus status);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query(value = """
-        SELECT *
-        FROM outbox_events
-        WHERE status = :status
-        ORDER BY created_at ASC
-        LIMIT :batchSize
-        FOR UPDATE SKIP LOCKED
-        """, nativeQuery = true)
+    SELECT * FROM outbox_events
+    WHERE status = :status
+    ORDER BY created_at ASC
+    LIMIT :batchSize
+    FOR UPDATE SKIP LOCKED
+    """, nativeQuery = true)
     List<OutboxEvent> claimPendingEvents(
             @Param("status") String status,
             @Param("batchSize") int batchSize

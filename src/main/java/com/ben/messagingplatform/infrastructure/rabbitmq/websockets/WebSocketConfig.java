@@ -14,6 +14,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final JwtStompChannelInterceptor jwtStompChannelInterceptor;
+    private final DeviceIdentityChannelInterceptor deviceIdentityChannelInterceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -29,6 +30,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(jwtStompChannelInterceptor);
+        registration.interceptors(
+                jwtStompChannelInterceptor,
+                deviceIdentityChannelInterceptor
+        );
     }
 }

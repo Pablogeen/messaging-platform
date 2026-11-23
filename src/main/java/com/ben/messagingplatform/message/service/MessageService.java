@@ -26,7 +26,6 @@ public class MessageService {
     private final ConversationParticipantRepository participantRepository;
     private final UserRepository userRepository;
     private final OutboxEventService outboxService;
-    private final ObjectMapper objectMapper;
 
 
     @Transactional
