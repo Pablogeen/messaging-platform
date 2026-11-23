@@ -16,8 +16,19 @@ spring:
     virtual-host: /
     publisher-confirm-type: correlated
     publisher-returns: true
+
     template:
       mandatory: true
+
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 1000
+          multiplier: 2
+          max-interval: 10000
+          max-attempts: 4
+
 
   jpa:
     hibernate:

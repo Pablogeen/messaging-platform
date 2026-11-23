@@ -38,7 +38,7 @@ public class ConversationParticipant {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private LocalDateTime joinedAt;
 
     private LocalDateTime leftAt;
@@ -50,5 +50,15 @@ public class ConversationParticipant {
         this.conversation = conversation;
         this.user = user;
         this.joinedAt = LocalDateTime.now();
+    }
+
+
+    public void leave() {
+        this.leftAt = LocalDateTime.now();
+    }
+
+    public void rejoin() {
+        this.joinedAt = LocalDateTime.now();
+        this.leftAt = null;
     }
 }

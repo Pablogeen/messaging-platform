@@ -1,6 +1,7 @@
 package com.ben.messagingplatform.infrastructure.rabbitmq;
 
 import com.ben.messagingplatform.infrastructure.rabbitmq.redis.ServerIdentity;
+import com.ben.messagingplatform.infrastructure.rabbitmq.websockets.RabbitMQConfig;
 import org.springframework.amqp.core.AnonymousQueue;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -35,9 +36,20 @@ public class MessageRoutingConfig {
 
     @Bean
     public Queue messageRoutingQueue() {
-        return new AnonymousQueue();
-    }
+        return new Queue(
+                "",
+                false,
+                true,
+                true,
+                java.util.Map.of(
+                        "x-dead-letter-exchange",
+                        RabbitMQConfig.DEAD_LETTER_EXCHANGE,
 
+                        "x-dead-letter-routing-key",
+                        RabbitMQConfig.ROUTING_DEAD_LETTER_KEY
+                )
+        );
+    }
     @Bean
     public Binding messageRoutingBinding(
             @Qualifier("messageRoutingQueue") Queue messageRoutingQueue,
