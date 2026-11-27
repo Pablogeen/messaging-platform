@@ -15,6 +15,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final JwtStompChannelInterceptor jwtStompChannelInterceptor;
     private final DeviceIdentityChannelInterceptor deviceIdentityChannelInterceptor;
+    private final ConversationSubscriptionInterceptor conversationSubscriptionInterceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -32,7 +33,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(
                 jwtStompChannelInterceptor,
-                deviceIdentityChannelInterceptor
+                deviceIdentityChannelInterceptor,
+                conversationSubscriptionInterceptor
         );
     }
 }

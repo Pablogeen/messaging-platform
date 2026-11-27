@@ -46,10 +46,25 @@ public class ConversationParticipant {
     @Column(nullable = false)
     private Long lastReadSequence = 0L;
 
+    @Column(nullable = false)
+    private Long lastDeliveredSequence = 0L;
+
     public ConversationParticipant(Conversation conversation, User user) {
         this.conversation = conversation;
         this.user = user;
         this.joinedAt = LocalDateTime.now();
+    }
+
+    public void acknowledgeDelivery(Long sequence) {
+        if (sequence > this.lastDeliveredSequence) {
+            this.lastDeliveredSequence = sequence;
+        }
+    }
+
+    public void acknowledgeRead(Long sequence) {
+        if (sequence > this.lastReadSequence) {
+            this.lastReadSequence = sequence;
+        }
     }
 
 

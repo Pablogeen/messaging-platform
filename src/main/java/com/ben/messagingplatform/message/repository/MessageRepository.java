@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
@@ -19,5 +20,15 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             Long sequenceNumber,
             LocalDateTime joinedAt,
             Pageable pageable
+    );
+
+    boolean existsByConversation_IdAndSequenceNumber(
+            Long conversationId,
+            Long sequenceNumber
+    );
+
+    Optional<Message> findByConversation_IdAndSequenceNumber(
+            Long conversationId,
+            Long sequenceNumber
     );
 }
