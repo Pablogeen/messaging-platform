@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ConversationParticipantRepository
@@ -16,4 +17,9 @@ public interface ConversationParticipantRepository
 
     boolean existsByConversation_IdAndUser_IdAndLeftAtIsNull(
             Long conversationId, Long userId);
+
+    Optional<ConversationParticipant> findByConversation_IdAndUser_IdAndLeftAtIsNull(
+            Long conversationId,
+            Long userId
+    );
 }
